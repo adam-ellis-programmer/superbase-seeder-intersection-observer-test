@@ -10,12 +10,18 @@ const LazyImage = ({ item }) => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) setIsInView(true)
+          if (entry.isIntersecting) {
+            setIsInView(true)
+          }
         })
       },
-      { threshold: 0.5 }
+      { threshold: 0.1 } // Reduced threshold for better UX
     )
-    if (listRef.current) observer.observe(listRef.current)
+    
+    if (listRef.current) {
+      observer.observe(listRef.current)
+    }
+    
     return () => observer.disconnect()
   }, [])
 
@@ -29,7 +35,7 @@ const LazyImage = ({ item }) => {
       {isInView && (
         <img
           src={item.url}
-          alt=''
+          alt={item.title || 'Travel product'}
           onLoad={() => setIsLoaded(true)}
           className={`h-full w-full object-cover rounded-md shadow-sm transition-opacity duration-700 ease-in-out ${
             isLoaded ? 'opacity-100' : 'opacity-0'
